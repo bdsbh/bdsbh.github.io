@@ -1,0 +1,566 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    z-index: 1000;
+    transition: background 0.5s ease; /* Slower transition */
+}
+
+header.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+}
+
+.logo-top {
+    font-size: 35px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.logo-bottom {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+header.scrolled .logo-top,
+header.scrolled .logo-bottom {
+    color: #0b4d3e;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-left: 25px;
+    position: relative;
+}
+
+nav ul li > a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    transition: color 0.3s;
+    position: relative;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li > a i {
+    margin-left: 5px;
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+nav ul li:hover > a i {
+    transform: rotate(180deg);
+}
+
+header.scrolled nav ul li > a {
+    color: #0b4d3e;
+}
+
+nav ul li > a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ce111a;
+    transition: width 0.4s ease-out; /* Slower transition */
+}
+
+nav ul li > a:hover::after {
+    width: 100%;
+}
+
+nav ul li > a.active {
+    color: #ce111a;
+}
+
+/* Dropdown Menu (Desktop) */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 220px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.4s ease; /* Slower transition */
+    display: block; /* Ensure it behaves as a block to stack vertically */
+}
+
+nav ul li:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: #0b4d3e;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background: rgba(11, 77, 62, 0.05);
+    color: #ce111a;
+    padding-left: 25px; 
+}
+
+/* Hamburger Menu Icon */
+.hamburger-menu {
+    display: none; /* Hidden by default on desktop */
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    z-index: 1002;
+    transition: color 0.3s ease;
+}
+
+header.scrolled .hamburger-menu {
+    color: #0b4d3e;
+}
+
+/* Mobile Nav Overlay */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off-screen */
+    width: 100%; /* Default full width */
+    max-width: 350px; /* Max width for smaller appearance */
+    height: 100%;
+    background: rgba(11, 77, 62, 0.98); /* Dark background for overlay */
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: right 0.5s ease-in-out; /* Smooth slide-in transition */
+    padding: 20px; /* Add some internal padding */
+}
+
+.mobile-nav-overlay.active {
+    right: 0; /* Slide in */
+}
+
+/* Close Button for Mobile Nav */
+.close-mobile-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    z-index: 1002;
+    transition: color 0.3s ease;
+}
+
+.close-mobile-nav:hover {
+    color: #ffb300;
+}
+
+.mobile-nav-overlay ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Take full width of the overlay container */
+    padding: 0; /* Remove padding here, controlled by overlay padding */
+}
+
+.mobile-nav-overlay ul li {
+    margin: 15px 0;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.mobile-nav-overlay ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 10px 0;
+    display: flex; /* Use flex to align icon */
+    justify-content: center;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav-overlay ul li a:hover {
+    color: #ffb300;
+}
+
+.mobile-nav-overlay ul li a .fas {
+    margin-left: 8px; /* Space for dropdown arrow */
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.mobile-nav-overlay ul li a.expanded .fas {
+    transform: rotate(180deg);
+}
+
+/* Mobile Dropdown Menu */
+.mobile-nav-overlay .dropdown-menu {
+    position: static; /* Override absolute positioning for mobile */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.1); /* Lighter background for submenus */
+    max-height: 0; /* Hidden by default */
+    overflow: hidden;
+    padding: 0;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Smooth slide up/down */
+    border-radius: 0;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.mobile-nav-overlay .dropdown-menu.active {
+    max-height: 300px; /* Max height to allow expansion, adjust if more links */
+    padding: 10px 0;
+}
+
+.mobile-nav-overlay .dropdown-menu li a {
+    font-size: 18px;
+    padding: 8px 0;
+    color: #f0f0f0;
+    justify-content: center;
+}
+
+.mobile-nav-overlay .dropdown-menu li a:hover {
+    color: #ce111a;
+    background: transparent; /* No background on hover for mobile submenus */
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.00001)), 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%),
+        url('hero-bg.png') center/cover no-repeat;
+    background-size: cover; /* Ensure image covers hero section */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Aligns content to the bottom */
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 0 20px 200px; /* Adjusted padding-bottom */
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px; /* Add some space below the heading */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1.5s ease; /* Slower animation */
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin-bottom: 30px;
+    animation: fadeIn 1.5s ease; /* Slower animation */
+}
+
+.btn {
+    display: inline-block;
+    background: #ffb300;
+    color: #1a3c27;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.4s ease; /* Slower transition */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 2s ease; /* Slower animation */
+}
+
+.btn:hover {
+    background: #ffc107;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer */
+footer {
+    background: #1a3c27;
+    color: #f0f0f0;
+    padding: 70px 5% 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-section h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #ce111a;
+}
+
+.address p {
+    margin-bottom: 10px;
+    line-height: 1.8;
+}
+
+.address p a { /* New style for clickable phone/email in address */
+    color: #f0f0f0;
+    text-decoration: none;
+    transition: color 0.3s, transform 0.3s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.address p a i {
+    margin-right: 8px; /* Added space next to icons */
+}
+
+.address p a:hover {
+    color: #ce111a;
+    transform: translateX(5px);
+}
+
+.useful-links ul {
+    list-style: none;
+}
+
+.useful-links ul li {
+    margin-bottom: 12px;
+}
+
+.useful-links ul li a {
+    color: #f0f0f0;
+    text-decoration: none;
+    position: relative; /* Needed for ::after pseudo-element */
+    padding-bottom: 2px; /* Space for the underline */
+    display: inline-block; /* Makes the underline length match text content */
+    transition: color 0.3s; /* Only color transition initially */
+}
+
+/* Style for the underline similar to header links */
+.useful-links ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ce111a; /* Red color */
+    transition: width 0.4s ease-out; /* Slower transition */
+}
+
+.useful-links ul li a:hover::after {
+    width: 100%;
+}
+
+.useful-links ul li a:hover {
+    color: #ce111a; /* Change text color on hover */
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white; /* Social media icons are white by default */
+    font-size: 18px;
+    transition: all 0.4s ease; /* Slower transition */
+}
+
+.social-links a:hover {
+    background: #ce111a; /* Red background on hover */
+    color: #1a3c27; /* Dark green icon on hover */
+    transform: translateY(-5px);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .hero h1 {
+        font-size: 3rem;
+    }
+    
+    nav ul li {
+        margin-left: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hide desktop nav, show hamburger */
+    nav {
+        display: none;
+    }
+    .hamburger-menu {
+        display: block;
+    }
+
+    header {
+        padding: 15px 5%;
+        flex-direction: row; /* Keep logo and hamburger on one line */
+        justify-content: space-between; /* Space out logo and hamburger */
+    }
+    
+    .logo {
+        margin-bottom: 0; /* Remove margin from previous mobile adaptation */
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Adjust mobile overlay width for smaller screens if needed */
+    .mobile-nav-overlay {
+        max-width: 100%; /* Allow full width on very small screens, or set a specific max-width like 90% of viewport width */
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    /* No need for specific .mobile-nav-overlay ul width here as it's 100% of its parent */
+}
+
+body.no-scroll {
+    overflow: hidden; /* Prevent body scrolling when mobile menu is open */
+}
