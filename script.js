@@ -30,17 +30,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Mobile Menu Functionality (Ensure these elements exist after header is loaded)
-            const hamburgerMenu = document.getElementById('hamburgerMenu');
-            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-            const closeMobileNav = document.getElementById('closeMobileNav');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-overlay .mobile-nav-link');
+            const hamburgerMenu = document.getElementById('hamburgerMenu'); // The hamburger button
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay'); //
+            const closeMobileNav = document.getElementById('closeMobileNav'); // The cross button
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-overlay a'); // All links in overlay
 
             function toggleMobileMenu() {
-                if (mobileNavOverlay && hamburgerMenu) {
+                if (mobileNavOverlay && hamburgerMenu && closeMobileNav) {
                     mobileNavOverlay.classList.toggle('active');
-                    hamburgerMenu.querySelector('i').classList.toggle('fa-bars');
-                    hamburgerMenu.querySelector('i').classList.toggle('fa-times');
                     document.body.classList.toggle('no-scroll');
+
+                    // Toggle visibility of hamburger and close icons
+                    if (mobileNavOverlay.classList.contains('active')) {
+                        hamburgerMenu.style.display = 'none'; // Hide hamburger
+                        closeMobileNav.style.display = 'block'; // Show cross
+                    } else {
+                        // This block should only execute if the screen size is mobile
+                        // The media query in CSS will handle initial display of hamburgerMenu
+                        // For the close button, we explicitly hide it
+                        hamburgerMenu.style.display = ''; // Reset to default (block via CSS media query)
+                        closeMobileNav.style.display = 'none'; // Hide cross
+                    }
                 }
             }
 
@@ -53,9 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Close mobile menu when a direct link (without submenu) is clicked
             mobileNavLinks.forEach(link => {
-                if (!link.dataset.target) {
+                // Only add click listener for closing if the link does NOT have a data-target
+                if (!link.closest('.dropdown-menu')) { // Exclude links within dropdowns too, as they should just open submenus
                     link.addEventListener('click', () => {
-                        if (mobileNavOverlay && mobileNavOverlay.classList.contains('active')) {
+                        // Ensure it's not a submenu toggle itself
+                        if (!link.hasAttribute('data-target') && mobileNavOverlay.classList.contains('active')) {
                             toggleMobileMenu();
                         }
                     });
@@ -66,14 +78,18 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.mobile-nav-link[data-target]').forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
+
                     const targetId = this.dataset.target;
                     const targetSubmenu = document.getElementById(targetId);
-                    
+
                     document.querySelectorAll('.mobile-nav-overlay .dropdown-menu.active').forEach(openSubmenu => {
                         if (openSubmenu.id !== targetId) {
                             openSubmenu.classList.remove('active');
-                            openSubmenu.previousElementSibling.classList.remove('expanded');
+                            // Find the parent mobile-nav-link that controls this submenu and remove 'expanded' class
+                            const controllingLink = document.querySelector(`.mobile-nav-link[data-target="${openSubmenu.id}"]`);
+                            if (controllingLink) {
+                                controllingLink.classList.remove('expanded');
+                            }
                         }
                     });
 
@@ -84,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
 
-            // Smooth scrolling for anchor links (if any) - ensure this is here if needed for internal anchors
+            // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -93,9 +109,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.querySelector(targetId).scrollIntoView({
                             behavior: 'smooth'
                         });
+                        // Close mobile menu after smooth scroll
+                        if (mobileNavOverlay.classList.contains('active')) {
+                            toggleMobileMenu();
+                        }
                     }
                 });
             });
+
+            // Initial state: Hide close button on page load
+            if (closeMobileNav) {
+                closeMobileNav.style.display = 'none';
+            }
+            // Ensure hamburger is visible on mobile on load.
+            // This relies on the CSS media query for .hamburger-menu
+            // and the display setting in the toggleMobileMenu function.
         });
 
     loadHTML('footer.html', 'footer-placeholder');

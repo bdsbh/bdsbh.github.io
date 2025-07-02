@@ -151,7 +151,7 @@ nav ul li:hover .dropdown-menu {
 .dropdown-menu li a:hover {
     background: rgba(11, 77, 62, 0.05);
     color: #ce111a;
-    padding-left: 25px; 
+    padding-left: 25px;
 }
 
 /* Hamburger Menu Icon */
@@ -161,6 +161,7 @@ nav ul li:hover .dropdown-menu {
     color: white;
     cursor: pointer;
     z-index: 1002;
+    /* Removed opacity/visibility transitions here as JS directly toggles display now */
     transition: color 0.3s ease;
 }
 
@@ -175,35 +176,49 @@ header.scrolled .hamburger-menu {
     right: -100%; /* Start off-screen */
     width: 100%; /* Default full width */
     max-width: 350px; /* Max width for smaller appearance */
-    height: 100%;
+    height: 100%; /* Make it take up the full viewport height */
+    overflow-y: auto; /* KEY CHANGE: Enables vertical scrolling for the overlay */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS */
     background: rgba(11, 77, 62, 0.98); /* Dark background for overlay */
     z-index: 1001;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */ /* REMOVED: This can interfere with scrolling if content is small */
     transition: right 0.5s ease-in-out; /* Smooth slide-in transition */
     padding: 20px; /* Add some internal padding */
+    padding-top: 80px; /* NEW: Add padding at the top to clear the close button */
 }
 
 .mobile-nav-overlay.active {
     right: 0; /* Slide in */
 }
 
+.mobile-nav-overlay.active + header .hamburger-menu, /* Hide hamburger when overlay is active (sibling selector) */
+.mobile-nav-overlay.active + header > .hamburger-menu /* Alternative for direct child of header */
+{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Prevent clicks when hidden */
+}
+
 /* Close Button for Mobile Nav */
 .close-mobile-nav {
-    position: absolute;
+    position: fixed; /* Keep fixed so it stays with viewport even if overlay scrolls */
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: white;
     cursor: pointer;
-    z-index: 1002;
+    z-index: 1003; /* Ensure close button is always on top */
+    /* Removed opacity/visibility transitions here as JS directly toggles display now */
     transition: color 0.3s ease;
+    display: none; /* KEY CHANGE: Initially hide the close button by default with CSS */
 }
 
+
 .close-mobile-nav:hover {
-    color: #ffb300;
+    color: #ce111a;
 }
 
 .mobile-nav-overlay ul {
@@ -212,6 +227,8 @@ header.scrolled .hamburger-menu {
     flex-direction: column;
     width: 100%; /* Take full width of the overlay container */
     padding: 0; /* Remove padding here, controlled by overlay padding */
+    flex-grow: 1; /* Allows the ul to take available space and push content */
+    justify-content: center; /* Center the items vertically within the scrollable area */
 }
 
 .mobile-nav-overlay ul li {
@@ -234,7 +251,7 @@ header.scrolled .hamburger-menu {
 }
 
 .mobile-nav-overlay ul li a:hover {
-    color: #ffb300;
+    color: #ce111a;
 }
 
 .mobile-nav-overlay ul li a .fas {
@@ -284,8 +301,8 @@ header.scrolled .hamburger-menu {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background: 
-        linear-gradient(rgba(0, 0, 0, 0.00001)), 
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.00001)),
         linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%),
         url('hero-bg.png') center/cover no-repeat;
     background-size: cover; /* Ensure image covers hero section */
@@ -506,7 +523,7 @@ footer::before {
     .hero h1 {
         font-size: 3rem;
     }
-    
+
     nav ul li {
         margin-left: 15px;
     }
@@ -519,6 +536,8 @@ footer::before {
     }
     .hamburger-menu {
         display: block;
+        opacity: 1;
+        visibility: visible;
     }
 
     header {
@@ -526,19 +545,20 @@ footer::before {
         flex-direction: row; /* Keep logo and hamburger on one line */
         justify-content: space-between; /* Space out logo and hamburger */
     }
-    
+
     .logo {
         margin-bottom: 0; /* Remove margin from previous mobile adaptation */
+        
     }
-    
+
     .hero h1 {
         font-size: 2.2rem;
     }
-    
+
     .hero p {
         font-size: 1rem;
     }
-    
+
     .footer-container {
         grid-template-columns: 1fr;
     }
@@ -553,11 +573,11 @@ footer::before {
     .hero h1 {
         font-size: 1.8rem;
     }
-    
+
     .section-title {
         font-size: 2rem;
     }
-    
+
     /* No need for specific .mobile-nav-overlay ul width here as it's 100% of its parent */
 }
 
