@@ -1,15 +1,133 @@
+/*
+    ------------------------------------------------------
+    Global Styles & Reset
+    ------------------------------------------------------
+*/
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Preferred font with fallbacks */
 }
 
 body {
-    color: #333;
-    line-height: 1.6;
+    color: #333; /* Default text color */
+    line-height: 1.6; /* Standard line height for readability */
+    -webkit-font-smoothing: antialiased; /* Improves text rendering on macOS/iOS */
+    -moz-osx-font-smoothing: grayscale; /* Improves text rendering on macOS/iOS */
 }
 
+/* Prevents scrolling when mobile menu is active */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/*
+    ------------------------------------------------------
+    Layout & Utility Classes
+    ------------------------------------------------------
+*/
+/* General container for content width limitation */
+.container {
+    max-width: 1200px; /* Maximum width of the content area */
+    margin: 0 auto; /* Centers the container horizontally */
+    padding: 0 15px; /* Adds horizontal padding to prevent content from touching edges */
+}
+
+/* Wrapper for main content to ensure header/footer placeholders work correctly */
+.content-wrapper {
+    min-height: calc(100vh - 100px); /* Adjust based on actual header/footer height if needed */
+    display: flex;
+    flex-direction: column;
+    padding-top: 50px; /* Adjust this value based on your header's height */
+    /* Add existing styles for content-wrapper if any, e.g., max-width, margin: auto */
+    margin: 0 auto; /* Center the content wrapper */
+    padding-bottom: 80px; /* Ensure space before footer */
+}
+
+/* Main Call-to-Action Button Style */
+.btn {
+    display: inline-block; /* Allows padding and horizontal alignment */
+    background: #ffb300; /* Primary button color (Yellow) */
+    color: #1a3c27; /* Dark green text for contrast */
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 30px; /* Highly rounded corners */
+    transition: all 0.4s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.btn:hover {
+    background: #ffc107; /* Slightly lighter yellow on hover */
+    transform: translateY(-3px); /* Lifts the button slightly */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+}
+
+/* Secondary Button Style */
+.btn-secondary {
+    background: #0b4d3e; /* Dark green button */
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:hover {
+    background: #1a3c27; /* Slightly darker green on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Smaller Button Style */
+.btn-small {
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+}
+
+/* General Section Styling */
+section {
+    padding: 80px 5%; /* Vertical and horizontal padding for sections */
+    text-align: center; /* Default text alignment for sections */
+}
+
+/* Main Section Title Style */
+.section-title {
+    font-size: 2.8rem;
+    color: #0b4d3e; /* Dark green title color */
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+    display: inline-block; /* Critical: Makes the element only as wide as its content */
+}
+
+/* Red Underline for Main Section Titles */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Align to the left edge of the inline-block parent */
+    width: 100%; /* Span the full width of the text */
+    height: 4px;
+    background: #ce111a; /* Red color */
+    border-radius: 2px;
+    transform: none; /* Ensures no horizontal transformation */
+}
+
+/* General Section Description Style */
+.section-description {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    line-height: 1.8;
+}
+
+/*
+    ------------------------------------------------------
+    Header & Navigation
+    ------------------------------------------------------
+*/
 /* Header Styles */
 header {
     position: fixed;
@@ -21,53 +139,71 @@ header {
     align-items: center;
     background: transparent;
     z-index: 1000;
-    transition: background 0.5s ease; /* Slower transition */
+    transition: background 0.5s ease, transform 0.3s ease-out, opacity 0.3s ease-out; /* Add transform and opacity for smooth hide/show */
 }
 
+/* Header Hide/Show on Scroll */
+header.header-hidden {
+    transform: translateY(-100%); /* Move header fully up to hide it */
+    pointer-events: none; /* Disable interaction when hidden */
+    opacity: 0; /* Make it invisible */
+}
+
+/* Ensure the header is visible by default or when not hidden */
+header:not(.header-hidden) {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Header style when scrolled */
 header.scrolled {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
+/* Logo Styling */
 .logo {
     display: flex;
     flex-direction: column;
-    z-index: 1001;
+    z-index: 1001; /* Above header for mobile close button context */
 }
 
 .logo-top {
     font-size: 35px;
     font-weight: 700;
-    color: white;
+    color: white; /* White on transparent header */
     letter-spacing: 1px;
 }
 
 .logo-bottom {
     font-size: 16px;
     font-weight: 600;
-    color: white;
+    color: white; /* White on transparent header */
     text-align: center;
     letter-spacing: 0.5px;
 }
 
+/* Logo color change when header is scrolled */
 header.scrolled .logo-top,
 header.scrolled .logo-bottom {
-    color: #0b4d3e;
+    color: #0b4d3e; /* Dark green on scrolled header */
 }
 
+/* Desktop Navigation List */
 nav ul {
     display: flex;
-    list-style: none;
+    list-style: none; /* Removes bullet points */
 }
 
 nav ul li {
-    margin-left: 25px;
-    position: relative;
+    margin-left: 25px; /* Spacing between menu items */
+    position: relative; /* For dropdown positioning */
 }
 
 nav ul li > a {
     text-decoration: none;
-    color: white;
+    color: white; /* White on transparent header */
     font-weight: 600;
     font-size: 16px;
     transition: color 0.3s;
@@ -77,60 +213,67 @@ nav ul li > a {
     align-items: center;
 }
 
+/* Dropdown arrow icon */
 nav ul li > a i {
     margin-left: 5px;
     font-size: 12px;
     transition: transform 0.3s;
 }
 
+/* Rotate dropdown arrow on hover */
 nav ul li:hover > a i {
     transform: rotate(180deg);
 }
 
+/* Nav link color change when header is scrolled */
 header.scrolled nav ul li > a {
-    color: #0b4d3e;
+    color: #0b4d3e; /* Dark green on scrolled header */
 }
 
+/* Underline effect for nav links */
 nav ul li > a::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0;
+    width: 0; /* Starts hidden */
     height: 2px;
-    background: #ce111a;
-    transition: width 0.4s ease-out; /* Slower transition */
+    background: #ce111a; /* Red underline */
+    transition: width 0.4s ease-out; /* Smooth growth of underline */
 }
 
+/* Expand underline on hover */
 nav ul li > a:hover::after {
     width: 100%;
 }
 
+/* Active nav link styling */
 nav ul li > a.active {
-    color: #ce111a;
+    color: #ce111a; /* Red for active link */
 }
 
-/* Dropdown Menu (Desktop) */
+/* Desktop Dropdown Menu */
 .dropdown-menu {
     position: absolute;
-    top: 100%;
+    top: 100%; /* Positions below the parent link */
     left: 0;
-    width: 220px;
-    background: rgba(255, 255, 255, 0.95);
+    width: 220px; /* Fixed width for dropdown */
+    background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     padding: 15px 0;
-    opacity: 0;
+    opacity: 0; /* Hidden by default */
     visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.4s ease; /* Slower transition */
-    display: block; /* Ensure it behaves as a block to stack vertically */
+    transform: translateY(10px); /* Starts slightly below */
+    transition: all 0.4s ease; /* Smooth appearance */
+    display: block; /* Ensures items stack vertically */
 }
 
+/* Show dropdown menu on parent hover */
 nav ul li:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0); /* Slides up to position */
 }
 
 .dropdown-menu li {
@@ -140,95 +283,94 @@ nav ul li:hover .dropdown-menu {
 }
 
 .dropdown-menu li a {
-    display: block;
+    display: block; /* Makes the entire area clickable */
     padding: 10px 20px;
-    color: #0b4d3e;
+    color: #0b4d3e; /* Dark green text */
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
 }
 
+/* Dropdown item hover effects */
 .dropdown-menu li a:hover {
-    background: rgba(11, 77, 62, 0.05);
-    color: #ce111a;
-    padding-left: 25px;
+    background: rgba(11, 77, 62, 0.05); /* Light green background */
+    color: #ce111a; /* Red text on hover */
+    padding-left: 25px; /* Slight indent on hover */
 }
 
-/* Hamburger Menu Icon */
+/* Hamburger Menu Icon (Mobile) */
 .hamburger-menu {
     display: none; /* Hidden by default on desktop */
     font-size: 28px;
-    color: white;
+    color: white; /* White on transparent header */
     cursor: pointer;
     z-index: 1002;
-    /* Removed opacity/visibility transitions here as JS directly toggles display now */
     transition: color 0.3s ease;
 }
 
+/* Hamburger menu color change when header is scrolled */
 header.scrolled .hamburger-menu {
-    color: #0b4d3e;
+    color: #0b4d3e; /* Dark green on scrolled header */
 }
 
-/* Mobile Nav Overlay */
+/* Mobile Navigation Overlay */
 .mobile-nav-overlay {
     position: fixed;
     top: 0;
-    right: -100%; /* Start off-screen */
-    width: 100%; /* Default full width */
-    max-width: 350px; /* Max width for smaller appearance */
-    height: 100%; /* Make it take up the full viewport height */
-    overflow-y: auto; /* KEY CHANGE: Enables vertical scrolling for the overlay */
-    -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS */
+    right: -100%; /* Starts off-screen to the right */
+    width: 100%;
+    max-width: 350px; /* Max width for smaller screens */
+    height: 100%;
+    overflow-y: auto; /* Enables scrolling for long menus */
+    -webkit-overflow-scrolling: touch; /* Improves iOS scrolling */
     background: rgba(11, 77, 62, 0.98); /* Dark background for overlay */
     z-index: 1001;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: center; */ /* REMOVED: This can interfere with scrolling if content is small */
-    transition: right 0.5s ease-in-out; /* Smooth slide-in transition */
-    padding: 20px; /* Add some internal padding */
-    padding-top: 80px; /* NEW: Add padding at the top to clear the close button */
+    transition: right 0.5s ease-in-out; /* Smooth slide-in */
+    padding: 20px;
+    padding-top: 80px; /* Space for the close button */
 }
 
+/* Show mobile nav overlay */
 .mobile-nav-overlay.active {
-    right: 0; /* Slide in */
+    right: 0; /* Slides into view */
 }
 
-.mobile-nav-overlay.active + header .hamburger-menu, /* Hide hamburger when overlay is active (sibling selector) */
-.mobile-nav-overlay.active + header > .hamburger-menu /* Alternative for direct child of header */
-{
+/* Hide hamburger when overlay is active */
+.mobile-nav-overlay.active + header .hamburger-menu {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none; /* Prevent clicks when hidden */
+    pointer-events: none;
 }
 
 /* Close Button for Mobile Nav */
 .close-mobile-nav {
-    position: fixed; /* Keep fixed so it stays with viewport even if overlay scrolls */
+    position: fixed; /* Stays visible even when overlay scrolls */
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: white;
     cursor: pointer;
-    z-index: 1003; /* Ensure close button is always on top */
-    /* Removed opacity/visibility transitions here as JS directly toggles display now */
+    z-index: 1003; /* Ensures it's always on top */
     transition: color 0.3s ease;
-    display: none; /* KEY CHANGE: Initially hide the close button by default with CSS */
+    display: none; /* Hidden by default, toggled by JS */
 }
-
 
 .close-mobile-nav:hover {
-    color: #ce111a;
+    color: #ce111a; /* Red on hover */
 }
 
+/* Mobile Nav List Styling */
 .mobile-nav-overlay ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    width: 100%; /* Take full width of the overlay container */
-    padding: 0; /* Remove padding here, controlled by overlay padding */
-    flex-grow: 1; /* Allows the ul to take available space and push content */
-    justify-content: center; /* Center the items vertically within the scrollable area */
+    width: 100%;
+    padding: 0;
+    flex-grow: 1; /* Allows the list to take available vertical space */
+    justify-content: center; /* Vertically centers items within the scrollable area */
 }
 
 .mobile-nav-overlay ul li {
@@ -244,7 +386,7 @@ header.scrolled .hamburger-menu {
     font-size: 22px;
     font-weight: 600;
     padding: 10px 0;
-    display: flex; /* Use flex to align icon */
+    display: flex;
     justify-content: center;
     align-items: center;
     transition: color 0.3s ease;
@@ -255,7 +397,7 @@ header.scrolled .hamburger-menu {
 }
 
 .mobile-nav-overlay ul li a .fas {
-    margin-left: 8px; /* Space for dropdown arrow */
+    margin-left: 8px;
     font-size: 16px;
     transition: transform 0.3s ease;
 }
@@ -266,365 +408,75 @@ header.scrolled .hamburger-menu {
 
 /* Mobile Dropdown Menu */
 .mobile-nav-overlay .dropdown-menu {
-    position: static; /* Override absolute positioning for mobile */
-    opacity: 1;
+    position: static; /* Overrides absolute positioning for mobile */
+    opacity: 1; /* Always visible in mobile overlay */
     visibility: visible;
     transform: translateY(0);
     box-shadow: none;
     background: rgba(255, 255, 255, 0.1); /* Lighter background for submenus */
-    max-height: 0; /* Hidden by default */
+    max-height: 0; /* Hidden by default, controlled by JS for slide effect */
     overflow: hidden;
     padding: 0;
-    transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Smooth slide up/down */
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Smooth expand/collapse */
     border-radius: 0;
     width: 100%;
     margin-top: 10px;
 }
 
+/* Show mobile dropdown menu */
 .mobile-nav-overlay .dropdown-menu.active {
-    max-height: 300px; /* Max height to allow expansion, adjust if more links */
+    max-height: 300px; /* Max height to allow expansion */
     padding: 10px 0;
 }
 
 .mobile-nav-overlay .dropdown-menu li a {
     font-size: 18px;
     padding: 8px 0;
-    color: #f0f0f0;
+    color: #f0f0f0; /* Lighter white for submenu items */
     justify-content: center;
 }
 
 .mobile-nav-overlay .dropdown-menu li a:hover {
     color: #ce111a;
-    background: transparent; /* No background on hover for mobile submenus */
+    background: transparent; /* No background hover for mobile submenus */
 }
 
+
+/*
+    ------------------------------------------------------
+    Homepage Sections
+    ------------------------------------------------------
+*/
 /* Hero Section */
 .hero {
-    height: 100vh;
+    height: 100vh; /* Full viewport height */
     background:
-        linear-gradient(rgba(0, 0, 0, 0.00001)),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%),
-        url('hero-bg.png') center/cover no-repeat;
-    background-size: cover; /* Ensure image covers hero section */
+        linear-gradient(rgba(0, 0, 0, 0.00001)), /* Nearly transparent layer */
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), /* Gradient overlay */
+        url('hero-bg.png') center/cover no-repeat; /* Background image */
     display: flex;
     flex-direction: column;
     justify-content: flex-end; /* Aligns content to the bottom */
     align-items: center;
     text-align: center;
     color: white;
-    padding: 0 20px 200px; /* Adjusted padding-bottom */
+    padding: 0 20px 200px; /* Adjusted bottom padding */
 }
 
 .hero h1 {
     font-size: 3.5rem;
-    margin-bottom: 20px; /* Add some space below the heading */
+    margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 1.5s ease; /* Slower animation */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Text shadow for readability */
+    animation: fadeIn 1.5s ease;
 }
 
 .hero p {
     font-size: 1.2rem;
     max-width: 700px;
     margin-bottom: 30px;
-    animation: fadeIn 1.5s ease; /* Slower animation */
-}
-
-.btn {
-    display: inline-block;
-    background: #ffb300;
-    color: #1a3c27;
-    padding: 12px 30px;
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: all 0.4s ease; /* Slower transition */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 2s ease; /* Slower animation */
-}
-
-.btn:hover {
-    background: #ffc107;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Footer */
-footer {
-    background: #1a3c27;
-    color: #f0f0f0;
-    padding: 70px 5% 30px;
-    position: relative;
-    overflow: hidden;
-}
-
-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-
-}
-
-.footer-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto 50px;
-    position: relative;
-    z-index: 1;
-}
-
-.footer-section h3 {
-    color: white;
-    font-size: 1.5rem;
-    margin-bottom: 25px;
-    position: relative;
-}
-
-.footer-section h3::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background: #ce111a;
-}
-
-.address p {
-    margin-bottom: 10px;
-    line-height: 1.8;
-}
-
-.address p a { /* New style for clickable phone/email in address */
-    color: #f0f0f0;
-    text-decoration: none;
-    transition: color 0.3s, transform 0.3s;
-    display: inline-flex;
-    align-items: center;
-}
-
-.address p a i {
-    margin-right: 8px; /* Added space next to icons */
-}
-
-.address p a:hover {
-    color: #ce111a;
-    transform: translateX(5px);
-}
-
-.useful-links ul {
-    list-style: none;
-}
-
-.useful-links ul li {
-    margin-bottom: 12px;
-}
-
-.useful-links ul li a {
-    color: #f0f0f0;
-    text-decoration: none;
-    position: relative; /* Needed for ::after pseudo-element */
-    padding-bottom: 2px; /* Space for the underline */
-    display: inline-block; /* Makes the underline length match text content */
-    transition: color 0.3s; /* Only color transition initially */
-}
-
-/* Style for the underline similar to header links */
-.useful-links ul li a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #ce111a; /* Red color */
-    transition: width 0.4s ease-out; /* Slower transition */
-}
-
-.useful-links ul li a:hover::after {
-    width: 100%;
-}
-
-.useful-links ul li a:hover {
-    color: #ce111a; /* Change text color on hover */
-}
-
-.social-links {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.social-links a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    color: white; /* Social media icons are white by default */
-    font-size: 18px;
-    transition: all 0.4s ease; /* Slower transition */
-}
-
-.social-links a:hover {
-    background: #ce111a; /* Red background on hover */
-    color: #1a3c27; /* Dark green icon on hover */
-    transform: translateY(-5px);
-}
-
-.copyright {
-    text-align: center;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 14px;
-    position: relative;
-    z-index: 1;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-    .hero h1 {
-        font-size: 3rem;
-    }
-
-    nav ul li {
-        margin-left: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-    /* Hide desktop nav, show hamburger */
-    nav {
-        display: none;
-    }
-    .hamburger-menu {
-        display: block;
-        opacity: 1;
-        visibility: visible;
-    }
-
-    header {
-        padding: 15px 5%;
-        flex-direction: row; /* Keep logo and hamburger on one line */
-        justify-content: space-between; /* Space out logo and hamburger */
-    }
-
-    .logo {
-        margin-bottom: 0; /* Remove margin from previous mobile adaptation */
-        
-    }
-
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-
-    .hero p {
-        font-size: 1rem;
-    }
-
-    .footer-container {
-        grid-template-columns: 1fr;
-    }
-
-    /* Adjust mobile overlay width for smaller screens if needed */
-    .mobile-nav-overlay {
-        max-width: 100%; /* Allow full width on very small screens, or set a specific max-width like 90% of viewport width */
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 1.8rem;
-    }
-
-    .section-title {
-        font-size: 2rem;
-    }
-
-    /* No need for specific .mobile-nav-overlay ul width here as it's 100% of its parent */
-}
-
-body.no-scroll {
-    overflow: hidden; /* Prevent body scrolling when mobile menu is open */
-}
-
-/* Add to existing styles.css */
-
-/* General Section Styling */
-section {
-    padding: 80px 5%;
-    text-align: center;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section-title {
-    font-size: 2.8rem;
-    color: #0b4d3e; /* Dark green */
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-    display: inline-block; /* To make the underline fit the text */
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: #ce111a; /* Red */
-    border-radius: 2px;
-}
-
-.section-description {
-    font-size: 1.1rem;
-    color: #555;
-    max-width: 800px;
-    margin: 0 auto 50px;
-    line-height: 1.8;
+    animation: fadeIn 1.5s ease;
 }
 
 /* About Us Section */
@@ -634,22 +486,15 @@ section {
 
 .about-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stacks columns by default */
     align-items: center;
     gap: 40px;
-    text-align: left; /* Align text to left within its block */
-}
-
-@media (min-width: 768px) {
-    .about-content {
-        flex-direction: row; /* Row layout on larger screens */
-        text-align: left;
-    }
+    text-align: left;
 }
 
 .about-text {
-    flex: 1;
-    padding-right: 20px; /* Space between text and image */
+    flex: 1; /* Takes equal space in flex layout */
+    padding-right: 20px;
 }
 
 .about-text p {
@@ -662,7 +507,7 @@ section {
 .about-image {
     flex: 1;
     display: flex;
-    justify-content: center; /* Center image if it doesn't fill flex item */
+    justify-content: center;
     align-items: center;
 }
 
@@ -673,26 +518,14 @@ section {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-.btn-secondary {
-    background: #0b4d3e; /* Dark green */
-    color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.btn-secondary:hover {
-    background: #1a3c27; /* Slightly darker green */
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Academics Section */
+/* Academics Section (Homepage overview) */
 .academics {
     background-color: white;
 }
 
 .curriculum-cards {
     display: flex;
-    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+    flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
     margin-top: 50px;
@@ -703,9 +536,9 @@ section {
     border-radius: 10px;
     padding: 40px 30px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-    flex: 1; /* Allow cards to grow and shrink */
-    min-width: 300px; /* Minimum width before wrapping */
-    max-width: 450px; /* Max width for larger screens */
+    flex: 1;
+    min-width: 300px;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -720,13 +553,13 @@ section {
 
 .curriculum-card i {
     font-size: 3.5rem;
-    color: #ce111a; /* Red */
+    color: #ce111a; /* Red icon */
     margin-bottom: 25px;
 }
 
 .curriculum-card h3 {
     font-size: 1.8rem;
-    color: #0b4d3e; /* Dark green */
+    color: #0b4d3e; /* Dark green heading */
     margin-bottom: 15px;
 }
 
@@ -735,23 +568,17 @@ section {
     color: #555;
     line-height: 1.7;
     margin-bottom: 25px;
-    flex-grow: 1; /* Allow paragraph to take available space */
+    flex-grow: 1; /* Allows paragraph to take available space */
 }
 
-.btn-small {
-    padding: 8px 20px;
-    font-size: 16px;
-    border-radius: 25px;
-}
-
-/* Admissions Section */
+/* Admissions Section (Homepage overview) */
 .admissions {
     background-color: #eef7f6; /* Very light green */
 }
 
 .admissions-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
     gap: 30px;
     margin-top: 50px;
 }
@@ -772,7 +599,7 @@ section {
 
 .info-item i {
     font-size: 3rem;
-    color: #ffb300; /* Yellow */
+    color: #ffb300; /* Yellow icon */
     margin-bottom: 20px;
 }
 
@@ -817,7 +644,7 @@ section {
 
 .facility-item i {
     font-size: 3.2rem;
-    color: #ffc107; /* Dark green */
+    color: #ffc107; /* Yellow icon */
     margin-bottom: 20px;
 }
 
@@ -833,16 +660,610 @@ section {
     line-height: 1.6;
 }
 
-/* Responsive adjustments for sections */
-@media (max-width: 992px) {
-    .section-title {
-        font-size: 2.4rem;
+/* Hiring Section */
+.hiring-section {
+    background-color: #f8f8f8;
+    color: white;
+    padding: 80px 5%;
+    text-align: center;
+}
+
+.hiring-section .section-title {
+    color: #0b4d3e;
+}
+
+.hiring-section .section-description {
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.hiring-section .btn {
+    background: #ffc107;
+    color: white; /* Changed button text color to white for better contrast on yellow */
+    padding: 15px 35px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.hiring-section .btn:hover {
+    background: #ffb300;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/*
+    ------------------------------------------------------
+    Curriculum Page Specific Styles
+    ------------------------------------------------------
+*/
+/* Curriculum Hero Section */
+.curriculum-hero {
+    background: linear-gradient(135deg, #e0f2f1, #ffffff); /* Soft gradient background */
+    padding: 150px 5% 80px; /* Increased top padding for more space from header */
+    text-align: center;
+    margin-top: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.curriculum-hero .section-title {
+    color: #0b4d3e;
+    font-size: 2.8rem;
+    margin-bottom: 25px;
+    position: relative;
+    animation: fadeIn 1s ease-out;
+}
+
+.curriculum-hero .section-title::after {
+    content: '';
+    display: block; /* Ensures it's on its own line */
+    width: 100%; /* Spans the full width of the text */
+    height: 4px;
+    background: #ce111a;
+    margin: 15px auto 0; /* Centers the underline below the text */
+    border-radius: 2px;
+}
+
+.curriculum-hero .curriculum-intro {
+    max-width: 900px;
+    margin: 30px auto 60px;
+    color: #333;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    animation: fadeInUp 1s ease-out;
+    animation-delay: 0.3s;
+    animation-fill-mode: both;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.curriculum-hero-icons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.curriculum-hero-icons i {
+    font-size: 4rem;
+    color: #0b4d3e;
+    opacity: 0;
+    animation: iconBounce 1s ease-out forwards;
+}
+
+.curriculum-hero-icons .delay-1 { animation-delay: 0.6s; }
+.curriculum-hero-icons .delay-2 { animation-delay: 0.9s; }
+
+/* Individual Curriculum Sections (NCTB, IGCSE) */
+.curriculum-section {
+    padding: 100px 5%;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.curriculum-section.alternate-bg {
+    background-color: #f8fcfb; /* Lighter shade for alternate sections */
+}
+
+.curriculum-section .section-title {
+    text-align: left; /* Titles within these sections are left-aligned */
+    margin-bottom: 30px;
+    color: #0b4d3e;
+    font-size: 2.2rem;
+    position: relative;
+    display: inline-block; /* Ensure width matches text */
+}
+
+.curriculum-section .section-title::after {
+    content: '';
+    display: block;
+    width: 100%; /* Spans full width of the text */
+    height: 3px;
+    background: #ce111a;
+    margin-top: 10px;
+    border-radius: 2px;
+    left: 0;
+    transform: none; /* No transformation needed as left is 0 */
+}
+
+/* Wrapper for Curriculum Boxes */
+.curriculum-box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+    padding: 50px; /* Inner padding for content */
+    margin-bottom: 60px; /* Spacing between boxes and below last one */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f0f0f0; /* Subtle border */
+}
+
+.curriculum-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Ensure titles within the curriculum-box are correctly aligned */
+.curriculum-box .section-title {
+    text-align: left; /* Explicitly ensure left alignment */
+}
+
+.curriculum-box .section-title::after {
+    left: 0; /* Ensure underline aligns with left-aligned title */
+    transform: none;
+}
+
+/* Button container within curriculum boxes */
+.button-container {
+    text-align: center; /* Center the enroll button */
+    margin-top: 50px; /* Spacing above button within the box */
+}
+
+/* Enroll Now Button Specific Styles */
+.enroll-btn {
+    display: inline-block;
+    background-color: #ce111a; /* Red color for prominence */
+    color: white;
+    padding: 15px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.15rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.enroll-btn:hover {
+    background-color: #b00f15; /* Darker red on hover */
+    transform: translateY(-3px);
+}
+
+
+/* Layout for curriculum content (image/icon and text side-by-side) */
+.curriculum-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.curriculum-layout.reverse {
+    flex-direction: row-reverse; /* Reverses order for alternate sections */
+}
+
+.curriculum-text {
+    flex: 1;
+    min-width: 300px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.curriculum-text p {
+    margin-bottom: 18px;
+}
+
+.curriculum-text ul {
+    list-style: none; /* Remove default bullets */
+    margin-left: 0;
+    margin-bottom: 25px;
+    padding-left: 0;
+}
+
+.curriculum-text ul li {
+    margin-bottom: 12px;
+    display: flex; /* Allows icon and text to be on one line */
+    align-items: flex-start;
+    color: #555;
+    font-size: 1.05rem;
+}
+
+.curriculum-text .list-icon {
+    color: #0b4d3e; /* Green checkmark */
+    margin-right: 10px;
+    font-size: 1.2em;
+    position: relative;
+    top: 2px;
+}
+
+.curriculum-visual {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px; /* Ensure space for visual */
+}
+
+.curriculum-visual .curriculum-icon {
+    font-size: 8rem; /* Large icon */
+    color: #ce111a; /* Red color for main icons */
+    z-index: 2;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.curriculum-visual:hover .curriculum-icon {
+    transform: scale(1.05);
+}
+
+.curriculum-visual .visual-shape {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background-color: rgba(11, 77, 62, 0.1); /* Semi-transparent green */
+    border-radius: 50%; /* Circle shape */
+    z-index: 1;
+    transition: transform 0.5s ease;
+}
+
+.curriculum-visual:hover .visual-shape {
+    transform: scale(1.1);
+}
+
+.visual-shape.shape-nctb {
+    background-color: rgba(11, 77, 62, 0.1); /* Greenish tint */
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Organic blob shape */
+}
+
+.visual-shape.shape-igcse {
+    background-color: rgba(206, 17, 26, 0.1); /* Reddish tint */
+    border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; /* Another organic blob shape */
+}
+
+
+/*
+    ------------------------------------------------------
+    Footer
+    ------------------------------------------------------
+*/
+footer {
+    background: #1a3c27; /* Dark green footer background */
+    color: #f0f0f0; /* Light text color */
+    padding: 70px 5% 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top border effect for footer */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: #ce111a; /* Red line */
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid columns */
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-section h3 {
+    color: white; /* White heading color */
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    position: relative;
+    display: inline-block; /* Critical: Makes the element only as wide as its content */
+}
+
+/* Red underline for footer headings */
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; /* Position below the text */
+    left: 0;
+    width: 100%; /* Span the full width of the text */
+    height: 3px;
+    background: #ce111a;
+}
+
+/* Address section specific styles */
+.address p {
+    margin-bottom: 10px;
+    line-height: 1.8;
+}
+
+.address p a {
+    color: #f0f0f0;
+    text-decoration: none;
+    transition: color 0.3s, transform 0.3s;
+    display: inline-flex; /* Allows icon and text to align */
+    align-items: center;
+}
+
+.address p a i {
+    margin-right: 8px; /* Space next to icons */
+}
+
+.address p a:hover {
+    color: #ce111a; /* Red on hover */
+    transform: translateX(5px); /* Slides slightly to the right */
+}
+
+/* Useful links section */
+.useful-links ul {
+    list-style: none;
+}
+
+.useful-links ul li {
+    margin-bottom: 12px;
+}
+
+.useful-links ul li a {
+    color: #f0f0f0;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+    display: inline-block;
+    transition: color 0.3s;
+}
+
+/* Underline effect for useful links */
+.useful-links ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ce111a;
+    transition: width 0.4s ease-out;
+}
+
+.useful-links ul li a:hover::after {
+    width: 100%;
+}
+
+.useful-links ul li a:hover {
+    color: #ce111a;
+}
+
+/* Social links styling */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    border-radius: 50%; /* Circle shape */
+    color: white;
+    font-size: 18px;
+    transition: all 0.4s ease;
+}
+
+.social-links a:hover {
+    background: #ce111a; /* Red background on hover */
+    color: #1a3c27; /* Dark green icon on hover */
+    transform: translateY(-5px); /* Lifts icon */
+}
+
+/* Copyright section */
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+/*
+    ------------------------------------------------------
+    Animations
+    ------------------------------------------------------
+*/
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes iconBounce {
+    0% { opacity: 0; transform: translateY(20px); }
+    60% { opacity: 1; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Apply animations to specific elements/sections */
+.animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+.animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+.animate-slide-in-left { animation: slideInLeft 1s ease-out forwards; }
+.animate-slide-in-right { animation: slideInRight 1s ease-out forwards; }
+
+/* Animation delays for sequential appearance */
+.curriculum-section:nth-of-type(2) .animate-fade-in-up,
+.curriculum-section:nth-of-type(2) .animate-slide-in-left {
+    animation-delay: 0.2s;
+}
+
+.curriculum-section:nth-of-type(3) .animate-fade-in-up,
+.curriculum-section:nth-of-type(3) .animate-slide-in-right {
+    animation-delay: 0.2s;
+}
+
+/*
+    ------------------------------------------------------
+    Responsive Design (Media Queries)
+    ------------------------------------------------------
+*/
+
+/* Desktop to Tablet adjustments */
+@media (max-width: 992px) {
+    /* Header & Nav */
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    nav ul li {
+        margin-left: 15px;
+    }
+
+    /* General Sections */
+    .section-title {
+        font-size: 2.4rem;
+    }
+
+    /* Curriculum Page */
+    .curriculum-hero {
+        padding: 120px 5% 80px; /* Adjust padding for smaller screens */
+    }
+    .curriculum-layout {
+        flex-direction: column; /* Stacks image/text vertically */
+        gap: 40px;
+    }
+
+    .curriculum-layout.reverse {
+        flex-direction: column; /* Ensures consistent stacking */
+    }
+
+    .curriculum-layout .curriculum-text,
+    .curriculum-layout .curriculum-visual {
+        min-width: unset; /* Resets minimum width */
+        width: 100%; /* Takes full width when stacked */
+    }
+
+    .curriculum-section .section-title {
+        text-align: center; /* Center align title on smaller screens */
+    }
+
+    .curriculum-section .section-title::after {
+        left: 50%; /* Center underline */
+        transform: translateX(-50%);
+    }
+
+    .curriculum-visual {
+        min-height: 250px;
+    }
+
+    .curriculum-visual .curriculum-icon {
+        font-size: 6rem;
+    }
+
+    .curriculum-visual .visual-shape {
+        width: 200px;
+        height: 200px;
+    }
+
+    /* Curriculum box padding */
+    .curriculum-box {
+        padding: 40px;
+    }
+
+    /* Facility Grid */
+    .facility-grid {
+        display: flex; /* Switch to flexbox for better wrapping */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .facility-item {
+        flex-basis: calc(33.33% - 20px); /* 3 items per row on tablet */
+        max-width: calc(33.33% - 20px);
+    }
+}
+
+/* Tablet to Mobile adjustments */
 @media (max-width: 768px) {
+    /* Header & Nav */
+    nav {
+        display: none; /* Hide desktop nav */
+    }
+    .hamburger-menu {
+        display: block; /* Show hamburger menu */
+        opacity: 1;
+        visibility: visible;
+    }
+
+    header {
+        padding: 15px 5%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .logo {
+        margin-bottom: 0;
+    }
+
+    .mobile-nav-overlay {
+        max-width: 100%; /* Allow full width on very small screens */
+    }
+
+    /* Homepage Sections */
     section {
-        padding: 60px 5%;
+        padding: 60px 5%; /* Reduced section padding */
     }
     .section-title {
         font-size: 2rem;
@@ -852,28 +1273,116 @@ section {
         font-size: 1rem;
         margin-bottom: 30px;
     }
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
 
+    .about-content {
+        flex-direction: column; /* Ensure stacking on smaller screens */
+        text-align: center;
+    }
     .about-text {
         padding-right: 0; /* Remove padding when stacked */
-        text-align: center;
     }
 
     .curriculum-card, .info-item, .facility-item {
-        min-width: unset; /* Reset min-width for better stacking */
-        width: 100%; /* Allow them to take full width on smaller screens if needed */
-        margin-bottom: 20px; /* Add some space between stacked cards */
+        min-width: unset;
+        width: 100%; /* Cards take full width */
+        margin-bottom: 20px;
     }
     .curriculum-cards, .admissions-info, .facility-grid {
+        gap: 20px; /* Reduced gap */
+    }
+    .facility-item {
+        flex-basis: 100%; /* Stack facilities on mobile */
+        max-width: 100%;
+    }
+
+    .hiring-section {
+        padding: 60px 5%;
+    }
+    .hiring-section .btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    /* Curriculum Page */
+    .curriculum-hero {
+        padding: 100px 5% 60px;
+    }
+
+    .curriculum-hero .section-title {
+        font-size: 2.2rem;
+    }
+
+    .curriculum-hero .curriculum-intro {
+        font-size: 1rem;
+    }
+
+    .curriculum-hero-icons {
         gap: 20px;
+    }
+
+    .curriculum-hero-icons i {
+        font-size: 3rem;
+    }
+
+    .curriculum-section {
+        padding: 60px 5%;
+    }
+
+    .curriculum-section .section-title {
+        font-size: 1.8rem;
+    }
+
+    .curriculum-visual {
+        min-height: 200px;
+    }
+
+    .curriculum-visual .curriculum-icon {
+        font-size: 5rem;
+    }
+
+    .curriculum-visual .visual-shape {
+        width: 150px;
+        height: 150px;
+    }
+
+    .curriculum-text p, .curriculum-text ul li {
+        font-size: 0.95rem;
+    }
+
+    /* Curriculum box padding & button spacing */
+    .curriculum-box {
+        padding: 30px;
+        margin-bottom: 40px;
+    }
+
+    .button-container {
+        margin-top: 30px;
+    }
+
+    .enroll-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    /* Footer */
+    .footer-container {
+        grid-template-columns: 1fr; /* Stacks footer sections */
     }
 }
 
+/* Small Mobile devices adjustments */
 @media (max-width: 480px) {
     .section-title {
         font-size: 1.8rem;
     }
     .hero h1 {
-        font-size: 2rem; /* Adjusted for smaller screens */
+        font-size: 2rem;
     }
     .hero p {
         font-size: 0.9rem;
@@ -882,69 +1391,50 @@ section {
         padding: 10px 25px;
         font-size: 16px;
     }
-}
 
-@media (min-width: 992px) {
-    .facility-grid {
-        display: flex; /* Switch to flexbox for desktop */
-        flex-wrap: wrap;
-        justify-content: center; /* This centers items in the last row */
-        gap: 30px; /* Keep the gap */
+    .curriculum-hero .section-title {
+        font-size: 1.8rem;
     }
 
-    .facility-item {
-        /* Calculate width to fit 4 per row, accounting for gap */
-        flex-basis: calc(25% - 22.5px); /* For 30px gap: (30px * 3 gaps) / 4 items = 22.5px reduction per item */
-        max-width: calc(25% - 22.5px); /* Ensure they don't grow beyond 25% */
+    .curriculum-hero-icons {
+        flex-direction: column; /* Stack icons vertically */
+        gap: 15px;
+    }
+
+    /* Curriculum box padding */
+    .curriculum-box {
+        padding: 20px;
     }
 }
 
-/* Hiring Section */
-.hiring-section {
-    background-color: #f8f8f8; /* Dark green, matching header/footer or primary branding */
-    color: white; /* White text for contrast */
-    padding: 80px 5%;
-    text-align: center;
-}
 
-.hiring-section .section-title {
-    color: #0b4d3e; /* White title on dark background */
-}
 
-.hiring-section .section-title::after {
-    background: #ce111a; /* Red underline for consistency */
-}
-
-.hiring-section .section-description {
-    color: #555; /* Slightly transparent white */
-    margin-bottom: 40px;
-}
-
-.hiring-section .btn {
-    background: #ffc107; /* Red button */
-    color: white;
-    padding: 15px 35px;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: background 0.3s ease, transform 0.3s ease;
-    display: inline-block; /* To allow padding and margin */
-}
-
-.hiring-section .btn:hover {
-    background: #ffb300; /* Darker red on hover */
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsive adjustments */
+/* Responsive adjustment for content-wrapper padding on smaller screens if header height changes */
 @media (max-width: 768px) {
-    .hiring-section {
-        padding: 60px 5%;
+    .content-wrapper {
+        padding-top: 80px; /* Slightly less padding on mobile if header is smaller */
+        margin-top: 0; /* Ensure no extra margin is inherited */
     }
+}
 
-    .hiring-section .btn {
-        padding: 12px 25px;
-        font-size: 1rem;
-    }
+/* Basic styling for section titles on content pages for consistency */
+.section-title {
+    text-align: center;
+    font-size: 2.5em;
+    color: #0b4d3e; /* Green color */
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #ce111a; /* Red color */
+    border-radius: 2px;
 }
